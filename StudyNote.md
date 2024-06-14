@@ -57,3 +57,38 @@ module.exports = {
 	},
 };
 ```
+
+## Lecture 03 - TailWidCSS
+
+---
+
+TailWindCSS : Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces. Unlike traditional CSS frameworks that provide predefined components and styles, Tailwind CSS provides low-level utility classes that let you build custom designs without writing any CSS.
+
+extention - TailWindCSS IntelliSense
+
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+[tailwind.config.js]
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"], // add
+	theme: {
+		extend: {},
+	},
+	plugins: [],
+};
+```
+
+[index.css]
+
+```js
+@tailwind base; //add
+@tailwind components;//add
+@tailwind utilities;//add
+
+:root {
+    ...
+```
