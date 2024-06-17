@@ -448,35 +448,50 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 3. [src/App.jsx] add/change code
 
 ```js
-import { Route, Routes } from "react-router-dom";
-import "./App.css";
+import { Route, Routes, Outlet } from "react-router-dom";
+// import "./App.css";
 
-import LandinPage from "./pages/LandingPage";
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import NavBar from "./layout/NavBar";
+import Footer from "./layout/Footer";
+
+// import NotAuthRoutes from "./components/NotAuthRoutes";
+// import ProtectedRoutes from "./components/ProtectedRoutes";
+// import UploadProductPage from "./pages/UploadProductPage";
+// import DetailProductPage from "./pages/DetailProductPage";
+// import CartPage from "./pages/CartPage";
+// import HistoryPage from "./pages/HistoryPage";
+
+function Layout() {
+	return (
+		<div>
+			<NavBar />
+			<main>
+				<Outlet />
+			</main>
+			<Footer />
+		</div>
+	);
+}
 
 function App() {
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>
 				{/* without Login */}
-				<Route index element={<LandinPage />}>
-					<Route element={<NotAuthRouthes />}>
-						<Route path="/login" element={<LoginPage />} />
-						<Route path="/register" element={<RegisterPage />} />
-					</Route>
+				<Route path="/" element={<LandingPage />} />
+				<Route path="/login" element={<LoginPage />} />
+				<Route path="/register" element={<RegisterPage />} />
 
-					{/* with Login */}
-					<Route element={<ProtectedRoutes />}>
-						<Route path="/product/upload" elemtnet={<UploadProductPage />} />
-						<Route
-							path="/product/:productId"
-							elemtnet={<DetailProductPage />}
-						/>
-						<Route path="/user/cart" elemtnet={<CartPage />} />
-						<Route path="/history" elemtnet={<HistoryPage />} />
-					</Route>
-				</Route>
+				{/* with Login */}
+				{/* <Route element={<ProtectedRoutes />}>
+					<Route path="product/upload" element={<UploadProductPage />} />
+					<Route path="product/:productId" element={<DetailProductPage />} />
+					<Route path="user/cart" element={<CartPage />} />
+					<Route path="history" element={<HistoryPage />} />
+				</Route> */}
 			</Route>
 		</Routes>
 	);
