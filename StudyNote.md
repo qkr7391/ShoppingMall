@@ -546,11 +546,11 @@ const Footer = () => {
 export default Footer;
 ```
 
-## Lecture 06 - Redux
+## Lecture 06 - Redux & Redux-Persist
 
 ---
 
-prepare for using Redux
+- Prepare for using Redux
 
 1. npm install @reduxjs/toolkit react-redux
 
@@ -629,3 +629,76 @@ This file is the entry point of your React application.
 It sets up the Redux store to be provided to all components using the Provider component from React Redux.
 The <BrowserRouter> component wraps the entire application, enabling React Router functionality.
 ReactDOM.createRoot().render() method is used to render the root component (<App />) into the HTML element with the id "root". This is the modern approach for rendering in React 18 and above.
+
+- Redux-Persist
+- Redux Persist is a library that helps persist the Redux state to the local storage or any other storage mechanism. It's commonly used in Redux applications, especially in combination with React, to maintain the state even after a page refresh or when the user navigates away from the application.
+
+1. npm install redux-persist
+2. [src/store/index.js]
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userSlice";
+import storage from "redux-persist/lib/storage";
+import {
+	FLUSH,
+	REHYDRATE,
+	PAUSE,
+	PERSIST,
+	PURGE,
+	REGISTER,
+	persistReducer,
+	persistStore,
+} from "redux-persist";
+
+// Combine all the reducers into one rootReducer.
+export const rootReducer = combineReducers({
+	user: userReducer, // Add the userReducer to the rootReducer.
+});
+
+// Configuration object for redux-persist.
+const persistConfig = {
+	key: "root", // Key for the persisted data in storage.
+	storage, // Storage engine to use (default storage in this case).
+};
+
+// Create a persisted reducer using the persistConfig and rootReducer.
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// Configure the Redux store with the persisted reducer and customized middleware.
+export const store = configureStore({
+	reducer: persistedReducer, // Use the persisted reducer.
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			serializableCheck: {
+				ignoreActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+			},
+		}),
+});
+
+// Create a persistor object for the store.
+export const persistor = persistStore(store);
+```
+
+3. [src/main.jsx]
+
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { persistor, store } from "./store";
+import { PersistGate } from "redux-persist/integration";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+	<BrowserRouter>
+		<Provider store={store}>
+			<PersistGate loading={null} persistor={persistor}>
+				<App />
+			</PersistGate>
+		</Provider>
+	</BrowserRouter>
+);
+```
