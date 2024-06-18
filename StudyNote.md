@@ -499,3 +499,49 @@ function App() {
 
 export default App;
 ```
+
+## Lecture 05 - CSS Structure & React Icons
+
+---
+
+![Alt text](IMG_0D7C05C293DC-1-1.jpeg)
+
+1. CSS structure
+   [src/App.jsx]
+
+```js
+function Layout() {
+	return (
+		<div className="flex flex-col h-screen justify-between">
+			<NavBar />
+			<main className="mb-auto w-10/12 max-w-4xl mx-auto">
+				<Outlet />
+			</main>
+			<Footer />
+		</div>
+	);
+}
+```
+
+2. React Icons
+
+- npm install react-icons
+  [src/Footer]
+
+```js
+import React from "react";
+import { AiOutlineSmile } from "react-icons/ai";
+
+const Footer = () => {
+	//change
+	return (
+		//style
+		<div className="flex h-20 text-lg justify-center items-center">
+			All right reserved.
+			<AiOutlineSmile />
+		</div>
+	);
+};
+
+export default Footer;
+```
