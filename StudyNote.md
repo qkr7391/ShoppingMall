@@ -545,3 +545,87 @@ const Footer = () => {
 
 export default Footer;
 ```
+
+## Lecture 06 - Redux
+
+---
+
+prepare for using Redux
+
+1. npm install @reduxjs/toolkit react-redux
+
+- Redux Toolkit provides utilities to simplify Redux development, and React Redux allows you to connect your React components with the Redux store.
+
+2. [src/store/userSlice.js]
+
+```js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
+	userData: {
+		id: "",
+		email: "",
+		name: "",
+		role: 0,
+		image: "",
+	},
+	isAuth: false,
+	isLoading: false,
+	error: "",
+};
+
+const userSlice = createSlice({
+	name: "user",
+	initialState,
+	reducers: {},
+	extraReducers: (buider) => {},
+});
+
+export default userSlice.reducer;
+```
+
+This file defines a Redux slice using createSlice from Redux Toolkit.
+It sets the initial state for the user slice, including userData, isAuth, isLoading, and error.
+The reducers and extraReducers sections are currently empty. They would contain reducer functions and extra reducers for handling actions and updating the state.
+
+3. [src/store/index.js]
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userSlice";
+
+export const store = configureStore({
+	reducer: {
+		user: userReducer,
+	},
+});
+```
+
+This file creates the Redux store using configureStore from Redux Toolkit.
+It imports the user reducer from userSlice.js.
+The user reducer is added to the store under the key user.
+
+4. [src/main.jsx]
+
+```js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+	<BrowserRouter>
+		<Provider store={store}>
+			<App />
+		</Provider>
+	</BrowserRouter>
+);
+```
+
+This file is the entry point of your React application.
+It sets up the Redux store to be provided to all components using the Provider component from React Redux.
+The <BrowserRouter> component wraps the entire application, enabling React Router functionality.
+ReactDOM.createRoot().render() method is used to render the root component (<App />) into the HTML element with the id "root". This is the modern approach for rendering in React 18 and above.
