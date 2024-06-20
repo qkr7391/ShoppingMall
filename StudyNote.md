@@ -702,3 +702,62 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 	</BrowserRouter>
 );
 ```
+
+## Lecture 07 - Backend simple setting
+
+---
+
+1. npm init
+2. npm install express
+3. npm install -D nodemone
+
+- express : Express.js is a minimal and flexible Node.js web application framework that provides a robust set of features to develop web and mobile applications. It simplifies the process of creating a server and handling requests and responses.
+
+- nodemon : Nodemon is a utility that helps develop Node.js applications by automatically restarting the node application when file changes in the directory are detected. It is a tool that significantly enhances the developer experience by eliminating the need to manually stop and restart the server every time you make changes to your code.
+
+4. When you send an API request from the client side to the backend, it is received in an entry file called index.js.
+
+[backend/src/index.js]
+
+```js
+const express = require("express");
+
+//constants
+const PORT = 4000;
+const app = express();
+
+//Showing on localhost:4000
+app.get("/", (req, res) => {
+	res.send("Hello, World!");
+});
+
+//Mark on Terminal
+app.listen(PORT, () => {
+	console.log("PORT is running on 4000 now.");
+});
+```
+
+5. Diretories structure
+   src/middleware/auth.js
+   /models/User.js
+   /routes/users.js
+   uploads
+   .env
+   .gitignore
+
+6. npm install bcryptjs cors dotenv jsonwebtoken mogoose
+
+7. bcryptjs
+   bcryptjs is a library used for hashing passwords in a secure way. It provides methods to create hashes and to compare a given password with its hash. This is useful for storing passwords securely in a database.
+
+8. cors
+   cors (Cross-Origin Resource Sharing) is a middleware used in Express.js applications to enable or restrict requested resources on a web server depending on where the HTTP request was initiated. It is used to allow or deny cross-origin requests.
+
+9. dotenv
+   dotenv is a module that loads environment variables from a .env file into process.env. This is useful for managing configuration settings separately from the source code.
+
+10. jsonwebtoken
+    jsonwebtoken is a library for creating and verifying JSON Web Tokens (JWT). JWTs are commonly used for authentication and secure data exchange.
+
+11. mongoose
+    mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a straightforward, schema-based solution to model your application data.
