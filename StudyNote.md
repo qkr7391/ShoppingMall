@@ -761,3 +761,31 @@ app.listen(PORT, () => {
 
 11. mongoose
     mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a straightforward, schema-based solution to model your application data.
+
+## Lecture 08 - express.static()
+
+---
+
+- The express.static() function is a built-in middleware function in Express.js that serves static files, such as HTML files, images, CSS files, and JavaScript files. This middleware is useful for serving assets that do not change dynamically, allowing you to deliver these files to the client's browser directly.
+
+[backend/src/index.j]
+
+```js
+const express = require("express");
+const path = require("path");
+
+//constants
+const PORT = 4000;
+const app = express();
+
+app.get("/", (req, res) => {
+	res.send("Hello, World!");
+});
+
+//Use absolute paths to be accessible from any path
+app.use(express.static(path.join(__dirname, "../uploads")));
+
+app.listen(PORT, () => {
+	console.log(`PORT is running on ${PORT}now.`);
+});
+```
