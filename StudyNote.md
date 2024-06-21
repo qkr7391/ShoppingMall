@@ -961,3 +961,46 @@ const User = mongoose.model("User", userSchema); //model
 
 module.exports = User; //export for using
 ```
+
+## Lecture 13 - Handling Error in Express
+
+---
+
+```js
+app.use((error, req, res, next) => {
+	res.send(error.message);
+});
+```
+
+-> This middleware function is designed to handle errors that occur in the application. Here’s what happens step-by-step:
+
+1. If an error occurs in any of the routes or other middleware, it can be passed to this error-handling middleware by calling next(error) in the previous middleware.
+2. This middleware catches the error and sends the error message as the response to the client.
+
+** If you handle errors caused by asynchronous requests in this way, the server will crash because the error handler cannot receive error messages. **
+
+Then ?
+
+```js
+app.use((error, req, res, next) => {
+	// res.send(error.message);
+	res.status(500).send(error.message);
+});
+```
+
+or
+
+```js
+app.use((error, req, res, next) => {
+	res.status(500).send("Internal Server Error");
+});
+```
+
+or
+
+```js
+app.use((error, req, res, next) => {
+	console.error(error.stack); // Log the error stack trace
+	res.status(500).send("Internal Server Error");
+});
+```
