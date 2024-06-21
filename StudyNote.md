@@ -812,3 +812,34 @@ const cors = require("cors"); //add
 
 app.use(cors()); // add
 ```
+
+## Lecture 10 - Express.json()
+
+---
+
+- Express.json() : What is express.json()?
+  express.json() is a middleware function in Express.js that parses incoming request bodies in JSON format. This functionality has been built into Express since version 4.16.0 and replaces the need for the body-parser module.
+
+- Key Concepts
+
+* JSON Parsing: The express.json() middleware automatically parses the request body as a JSON object when the Content-Type header is set to application/json, and stores it in req.body.
+* Middleware Usage: Using app.use(express.json()) allows JSON body parsing for all routes. For specific routes, you can apply it directly.
+
+[backend/src/index.js]
+
+```js
+app.use(express.json()); //add
+
+//example
+app.post("/", (req, res) => {
+	console.log(req.body);
+	res.json(req.body);
+});
+```
+
+- Why JSON Body Parsing is Necessary
+
+* RESTful API: RESTful APIs often exchange data in JSON format. When a client sends JSON data to the server, the server needs to parse and use it.
+* Data Processing: To process or store data in a database, the server needs to convert JSON data into JavaScript objects.
+
+* express.json() is a useful middleware that automatically parses JSON formatted request bodies, making it easier to handle JSON data in Express applications. It plays an essential role in modern web applications, especially when dealing with RESTful APIs that process JSON data.
