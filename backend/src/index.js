@@ -31,6 +31,12 @@ app.post("/", (req, res) => {
 	res.json(req.body);
 });
 
+app.use("/users", require("./routes/users"));
+
+app.use((error, req, res, next) => {
+	console.error(error.stack); // Log the error stack trace
+	res.status(500).send("Internal Server Error");
+});
 //Use absolute paths to be accessible from any path
 app.use(express.static(path.join(__dirname, "../uploads")));
 
