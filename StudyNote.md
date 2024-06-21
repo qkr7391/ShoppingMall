@@ -1016,6 +1016,56 @@ Using tailswind css and html
 
 ### 02. React-Hook-Form
 
+- Leveraging React-hooks for validation checks
+
+What is 'Validation Checks'? : a process used to ensure that data or inputs meet specific criteria or rules before they are processed or accepted. Validation checks are commonly used in various contexts, such as data entry, software development, and form submissions, to ensure the accuracy, consistency, and reliability of the data being handled.
+
+1. npm install react-hook-form
+2. [frontend/src/pages/RegisterPage/index.jsx]
+
+```js
+const {
+	register,
+	handleSubmit,
+	formState: { errors },
+	reset,
+} = useForm({ mode: "onChange" });
+
+const onSubmit = ({ email, password, name }) => {
+	reset();
+};
+
+const userEmail = {
+	required: "Required field",
+};
+
+const userName = {
+	required: "Required field",
+};
+
+const userPassword = {
+	required: "Required field",
+	minLength: {
+		value: 6,
+		message: "Password must be at least 6 characters.",
+	},
+};
+
+<input
+	type="email"
+	id="email"
+	className="w-full px-4 py-2 mt-2 bg-white border rounded-md"
+	{...register("email", userEmail)}
+/>;
+{
+	errors.email && (
+		<div>
+			<span className="text-red-500">{errors.email.message}</span>
+		</div>
+	);
+}
+```
+
 ### 03. Axios instance
 
 ### 04. Creact Register function

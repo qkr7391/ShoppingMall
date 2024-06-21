@@ -31,7 +31,7 @@ app.post("/", (req, res) => {
 	res.json(req.body);
 });
 
-app.use("/users", require("./routes/users"));
+// app.use("/users", require("./routes/users"));
 
 app.use((error, req, res, next) => {
 	console.error(error.stack); // Log the error stack trace
