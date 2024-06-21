@@ -789,3 +789,26 @@ app.listen(PORT, () => {
 	console.log(`PORT is running on ${PORT}now.`);
 });
 ```
+
+## Lecture 09 - cors
+
+---
+
+- CORS : CORS, which stands for Cross-Origin Resource Sharing, is a security feature implemented by web browsers to control how web applications interact with resources from different origins. It helps prevent potentially malicious websites from accessing resources on another domain without permission.
+
+- How CORS Works
+  When a web application makes a request to a resource from a different origin (domain, protocol, or port), the browser will first send an HTTP request known as a "preflight" request. This preflight request uses the HTTP method OPTIONS and checks if the actual request is safe to send. The server's response to this preflight request includes specific headers that indicate whether the actual request is allowed.
+
+- Key Concepts
+
+* Same-Origin Policy (SOP): A security measure that restricts how documents and scripts loaded from one origin can interact with resources from another origin. CORS relaxes this restriction under specific conditions.
+* Preflight Request: A CORS request made with the OPTIONS method to determine whether the actual request is safe to send.
+* Access-Control-Allow-Origin: A response header that specifies which origins are allowed to access the resource.
+
+[backend/src/index.js]
+
+```js
+const cors = require("cors"); //add
+
+app.use(cors()); // add
+```
