@@ -1004,3 +1004,48 @@ app.use((error, req, res, next) => {
 	res.status(500).send("Internal Server Error");
 });
 ```
+
+## Lecture 14 - Implemeting Login function
+
+---
+
+### 01. Register page UI
+
+[frontend/src/pages/RegisterPage/index.jsx]
+Using tailswind css and html
+
+### 02. React-Hook-Form
+
+### 03. Axios instance
+
+### 04. Creact Register function
+
+### 05. Using react toast
+
+### 06. Create register route
+
+### 07. Encrypting password
+
+### 08. Enforce password encryption at signup
+
+### 09. Create Login Page
+
+### 10. Why authentication is required
+
+### 11. About JWT
+
+### 12. Create login route
+
+### 13. Check to see if you're authenticated
+
+### 14. NotSuthRoutes, ProtectedRoutes
+
+### 15. NavBar
+
+### 16. NavBar Item
+
+### 17. Handling token expiration
+
+```
+
+```
