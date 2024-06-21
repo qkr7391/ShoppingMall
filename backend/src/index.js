@@ -1,6 +1,10 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 //constants
 const PORT = 4000;
@@ -8,6 +12,15 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => {
+		console.log("connect success");
+	})
+	.catch((err) => {
+		console.log(err);
+	});
 
 app.get("/", (req, res) => {
 	res.send("Hello, World!");

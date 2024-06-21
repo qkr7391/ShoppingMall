@@ -843,3 +843,62 @@ app.post("/", (req, res) => {
 * Data Processing: To process or store data in a database, the server needs to convert JSON data into JavaScript objects.
 
 * express.json() is a useful middleware that automatically parses JSON formatted request bodies, making it easier to handle JSON data in Express applications. It plays an essential role in modern web applications, especially when dealing with RESTful APIs that process JSON data.
+
+## Lecture 11 - MongoDB & Mongoose
+
+---
+
+- MondoDB : MongoDB is a NoSQL database that stores data in a flexible, JSON-like format called BSON (Binary JSON). It is designed to handle large volumes of data, scale out easily, and provide high availability. Unlike traditional relational databases that use tables and rows, MongoDB uses collections and documents to manage data, allowing for a more flexible schema design.
+
+* Key Features of MongoDB
+
+1. Document-Oriented Storage: Stores data as JSON-like documents.
+2. Schema Flexibility: Documents in the same collection can have different fields.
+3. Scalability: Easily scales out horizontally using sharding.
+4. High Availability: Supports replication for data redundancy and failover.
+5. Powerful Query Language: Rich query language for filtering and manipulating data.
+6. Indexing: Supports various types of indexes to improve query performance.
+
+- Basic MongoDB Concepts
+
+* Database: A container for collections.
+* Collection: A group of MongoDB documents, similar to a table in relational databases.
+* Document: A single record in a collection, represented in BSON format.
+* Field: A key-value pair in a document.
+
+- Mongoose : Mongoose is an Object Data Modeling (ODM) library for MongoDB and Node.js. It provides a straight-forward, schema-based solution to model your application data. Mongoose manages relationships between data, provides schema validation, and is used to translate between objects in code and the representation of those objects in MongoDB.
+
+* Key Features of Mongoose
+
+1. Schema Definition: Mongoose allows you to define schemas for your collections, specifying the structure of the documents.
+2. Validation: You can define custom validation rules for your schemas to ensure data integrity.
+3. Middleware: Mongoose supports middleware (also known as pre and post hooks) for various lifecycle events, such as saving or deleting documents.
+4. Type Casting: Automatically converts data types to match your schema.
+5. Query Building: Provides a more readable and chainable API for building queries.
+6. Plugins: Mongoose has a flexible plugin system to extend its capabilities.
+
+Connect MongoDB with Server
+
+1. npm install mongoose
+2. [backend/src/index.js]
+
+```js
+const mongoose = require("mongoose"); //add
+const dotenv = require("dotenv"); //add
+
+dotenv.config(); //add
+
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => {
+		console.log("connect success");
+	})
+	.catch((err) => {
+		console.log(err);
+	});
+```
+
+3. [backend/.env]
+   MONGO_URI=link address
+
+[Hide id and password for security problem]
