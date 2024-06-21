@@ -902,3 +902,62 @@ mongoose
    MONGO_URI=link address
 
 [Hide id and password for security problem]
+
+## Lecture 12 - Create Model & Schema
+
+---
+
+- Model : A model is a compiled version of the schema. It provides the interface to interact with the database, enabling you to create, read, update, and delete (CRUD) documents within the MongoDB collection that the model represents.
+
+* Key Points about Model
+
+- Instance Creation: Allows you to create instances of documents.
+- CRUD Operations: Provides methods to perform CRUD operations.
+- Querying: Enables querying the database with various conditions and filters.
+- Instance Methods: Uses methods defined on the schema for document instances.
+- Static Methods: Uses static methods defined on the schema for the model itself.
+
+- Schema : In Mongoose (and many other ODM/ORM libraries), a schema is a blueprint or a structure for defining the shape and structure of documents within a MongoDB collection. It outlines the fields and their types, as well as validation rules, default values, and other configurations for the data.
+
+* Key Points about Schema
+
+- Structure: Defines the fields and types of data to be stored in a collection.
+- Validation: Specifies validation rules to ensure data integrity.
+- Defaults: Can set default values for fields if none are provided.
+- Indexing: Allows you to create indexes to optimize query performance.
+- Methods: Can define custom instance methods for documents.
+- Stat: Can define static methods for the model.
+
+1. Create Schema
+
+[backend/src/models/User.js]
+
+```js
+const { default: mongoose } = require("mongoose");
+
+//Schema
+const userSchema = mongoose.Schema({
+	name: {
+		type: String,
+		maxLength: 50,
+	},
+	email: {
+		type: String,
+		trim: true,
+		unique: true,
+	},
+	password: {
+		type: String,
+		minLength: 5,
+	},
+	role: {
+		trype: Number,
+		default: 0,
+	},
+	image: String,
+});
+
+const User = mongoose.model("User", userSchema); //model
+
+module.exports = User; //export for using
+```
