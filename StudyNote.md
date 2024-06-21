@@ -1068,6 +1068,34 @@ const userPassword = {
 
 ### 03. Axios instance
 
+- What is Axios? : Axios is a popular JavaScript library used to make HTTP requests from the browser or Node.js. It is often used in web development to interact with APIs, fetch data from a server, send data to a server, and perform other HTTP operations. Axios is known for its simplicity, ease of use, and ability to handle requests and responses with promises.
+
+- Key Features of Axios
+
+* Promise-Based: Axios uses promises, which makes it compatible with modern JavaScript features like async and await for handling asynchronous operations more easily.
+
+* Request and Response Interception: You can intercept requests or responses before they are handled by then or catch.
+
+* Automatic Transformations: Axios automatically transforms JSON data, making it easier to work with the responses from APIs.
+
+* Error Handling: It provides robust error handling features that allow you to handle errors gracefully.
+
+* Cancellation: You can cancel requests using the CancelToken API.
+
+* CSRF Protection: Axios provides support for Cross-Site Request Forgery (CSRF) protection.
+
+* Client-Side Support: Works well in both browser and Node.js environments.
+
+1. npm install axios
+2. [frontend/src/utils/axios.js]
+
+- Reasons for Instantiating Axios
+
+1. Managing Default Settings: By creating an Axios instance, you can centralize and manage default settings such as base URL, headers,
+2. Interceptor Configuration: Interceptors allow you to perform middleware-like functions before requests are sent or responses are handled. This is useful for tasks like adding authentication tokens to requests or globally handling error responses.
+3. Reusability: With Axios instances, you can reuse specific API clients across different modules or components of your application. This reduces code duplication and maintains consistency.
+4. Multiple Instances: If you need multiple API clients with different configurations (e.g., different base URLs or headers), you can create separate Axios instances for each.
+
 ### 04. Creact Register function
 
 ### 05. Using react toast
