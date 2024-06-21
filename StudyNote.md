@@ -1098,6 +1098,72 @@ const userPassword = {
 
 ### 04. Creact Register function
 
+1. [frontend/src/index.jsx]
+
+```js
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../store/thunkFunction";
+
+const dispatch = useDispatch();
+
+const onSubmit = ({ email, password, name }) => {
+	const body = {
+		email,
+		password,
+		name,
+		image: `https://via.placeholder.com/600x400?text=no+user+image`,
+	};
+	dispatch(registerUser(body));
+	reset();
+};
+```
+
+2. [frontend/src/store/thunkFunction.js]
+
+```js
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "../utils/axios";
+
+export const registerUser = createAsyncThunk(
+	"user/registerUser",
+
+	async (body, thunkAPI) => {
+		try {
+			const response = await axiosInstance.post(`/users/register`, body);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+			return thunkAPI.rejectWithValue(error.response.data || error.message);
+		}
+	}
+);
+```
+
+3. [frontend/src/store/userSlice.js]
+
+```js
+import { registerUser } from "./thunkFunction";
+
+const userSlice = createSlice({
+	name: "user",
+	initialState,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(registerUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(registerUser.fulfilled, (state) => {
+				state.isLoading = false;
+			})
+			.addCase(registerUser.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload;
+			});
+	},
+});
+```
+
 ### 05. Using react toast
 
 ### 06. Create register route
