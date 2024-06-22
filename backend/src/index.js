@@ -33,6 +33,9 @@ app.post("/", (req, res) => {
 
 // app.use("/users", require("./routes/users"));
 
+const usersRouter = require("./routes/users");
+app.use("/users", usersRouter);
+
 app.use((error, req, res, next) => {
 	console.error(error.stack); // Log the error stack trace
 	res.status(500).send("Internal Server Error");

@@ -1203,6 +1203,102 @@ import { toast } from "react-toastify";
 
 ### 06. Create register route
 
+[backend/src/index.js]
+
+```js
+app.use("/users", require("./routes/users"));
+```
+
+- Purpose: This line of code registers a middleware in the Express application to handle routes that start with /users.
+- Interaction: When a request is made to any URL that starts with /users, the Express application will forward that request to the router defined in ./routes/users.js.
+
+[backend/src/routes/users.js]
+
+```js
+//imports the Express module - allows to use express functionalities in this file
+const express = require("express");
+// Creates a new router object -
+const router = express.Router();
+
+//Defines a route handler for POST requests to /users/register.
+router.post("/register", async (req, res) => {
+	//Error handling within the route.
+	try {
+		//Creates a new instance of the User model.
+		const user = new User(req.body);
+		//Saves the user to the database.
+		await user.save();
+		//Sends a response with HTTP status code 200.
+		return res.sendStatus(200);
+	} catch (error) {
+		//Handles any errors that occur during the execution of the try block.
+		console.log(error);
+		//Passes the error to the next middleware, typically an error-handling middleware.
+		next(error);
+	}
+});
+
+module.exports = router;
+```
+
+- Interaction between 'index.js' and 'users.js' : - When a POST request is made to /users/register, the middleware registered in index.js intercepts the request.
+
+* The index.js file uses the router defined in users.js to handle this request.
+* The router in users.js processes the request, tries to create and save a new user, and sends an appropriate response back to the client.
+* If any errors occur, they are handled and passed along to any error-handling middleware.
+
+\*\* ERROR
+app.use("/users", require("./routes/users")); -> ERROR
+' throw new TypeError('Router.use() requires a middleware function but got a ' + gettype(fn))
+
+TypeError: Router.use() requires a middleware function but got a undefined'
+
+CHANGE TO
+const usersRouter = require("./routes/users");
+app.use("/users", usersRouter);
+
+Both app.use("/users", require("./routes/users")); and const usersRouter = require("./routes/users"); app.use("/users", usersRouter); achieve the same goal of mounting the usersRouter middleware at the /users endpoint in your Express application. However, there are subtle differences in how they work and are typically used:
+
+1. Inline require Syntax:
+   'app.use("/users", require("./routes/users"));'
+
+- Description: In this syntax, require("./routes/users") directly loads and executes the users.js file. The returned value from require("./routes/users") is immediately passed as a parameter to app.use().
+- Usage: This approach is concise and often used when you want to inline the require statement directly within the app.use() call without assigning it to a variable.
+
+2. Separate require and app.use:
+   'const usersRouter = require("./routes/users");
+   app.use("/users", usersRouter); '
+
+- Description: Here, const usersRouter = require("./routes/users"); assigns the exported module from users.js to the variable usersRouter. Then, app.use("/users", usersRouter); uses the usersRouter variable as the middleware to be mounted at /users.
+- Usage: This approach separates the loading of the router module from its mounting, which can be useful for readability and if you need to reuse the usersRouter variable elsewhere in your application.
+
+* Key Considerations:
+
+- Readability and Maintenance: Using a separate require statement and app.use() call can make your code easier to read, especially if you have multiple middleware or want to reuse the router in different parts of your application.
+
+- Performance: Both methods have negligible differences in performance since require caches modules after the first load, so subsequent calls to require for the same module are fast.
+
+- Error Handling: If there are errors during module loading (e.g., require fails to find the file), handling them might differ slightly between the two approaches, although in practical scenarios, this difference is minimal.
+
+- When inlined, it would be ' throw new TypeError('Router.use() requires a middleware function but got a ' + gettype(fn))
+  TypeError: Router.use() requires a middleware function but got a undefined'
+  Why did I get this error and it disappeared when I wrote delimited code? : The error 'Router.use() requires a middleware function but got a undefined' typically occurs in Express when it expects a middleware function but receives undefined instead. This happens when the routing setup or middleware usage is not correctly defined
+
+When you encounter this error, it often points to issues such as:
+
+1. Typographical Errors or Incorrect Route Paths:
+   If the route path specified in app.use("/users", require("./routes/users")) does not match the actual path defined in your router file (./routes/users), Express cannot find the middleware function it needs.
+
+2. Middleware Function Definition Problems:
+   If the function exported by require("./routes/users") does not properly export a middleware function that Express can use, it may result in undefined being passed instead of a valid middleware function.
+
+3. Module Loading Issues:
+   Sometimes, due to module loading problems or incorrect export statements, the imported module may not be what Express expects, leading to undefined being passed as a middleware.
+
+To resolve this issue, using a separate variable to store the imported router module (const usersRouter = require("./routes/users")) and then passing it explicitly to app.use() (app.use("/users", usersRouter)) helps to ensure that Express correctly identifies and uses the middleware function provided by the router module. This approach enhances code clarity and reduces the likelihood of undefined being passed inadvertently as a middleware function.
+
+Therefore, the reason the error disappeared when using separate, explicitly defined variables for require() and app.use() is because it ensures Express correctly interprets the router module as a middleware function, avoiding the issues associated with inline require() usage where evaluation errors can occur unexpectedly.
+
 ### 07. Encrypting password
 
 ### 08. Enforce password encryption at signup
