@@ -1166,6 +1166,41 @@ const userSlice = createSlice({
 
 ### 05. Using react toast
 
+- What is react-toast? : React Toast is a popular way to display notifications or alerts in a React application. It provides a simple and user-friendly interface to show temporary messages to the user, often used to indicate success, error, warning, or informational messages. Several libraries offer toast notifications for React, with react-toastify being one of the most popular options.
+
+1. npm install react-toastify
+2. [frontend/src/App.jsx]
+
+```js
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+<ToastContainer
+	position="bottom-right"
+	theme="light"
+	pauseOnHover
+	autoClose={1500}
+/>;
+```
+
+3. [frontend/src/store/userSlice.js]
+
+```js
+import { toast } from "react-toastify";
+
+...
+.addCase(registerUser.fulfilled, (state) => {
+	state.isLoading = false;
+	toast.info("Sing up success."); // add
+})
+.addCase(registerUser.rejected, (state, action) => {
+	state.isLoading = false;
+	state.error = action.payload;
+	toast.error(action.payload); //add
+});
+...
+```
+
 ### 06. Create register route
 
 ### 07. Encrypting password

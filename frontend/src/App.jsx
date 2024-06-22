@@ -1,6 +1,9 @@
 import { Route, Routes, Outlet } from "react-router-dom";
 // import "./App.css";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LandingPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -17,6 +20,12 @@ import Footer from "./layout/Footer";
 function Layout() {
 	return (
 		<div className="flex flex-col h-screen justify-between">
+			<ToastContainer
+				position="bottom-right"
+				theme="light"
+				pauseOnHover
+				autoClose={1500}
+			/>
 			<NavBar />
 			<main className="mb-auto w-10/12 max-w-4xl mx-auto">
 				<Outlet />
