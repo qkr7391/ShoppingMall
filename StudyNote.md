@@ -1437,6 +1437,38 @@ token contains user credentials or roles.
 
 ### 11. About JWT
 
+- What is JWT (JSON Web Token)?
+  JSON Web Token (JWT) is an open standard (RFC 7519) for securely transmitting information between parties as a JSON object. It is compact, self-contained, and can be used for secure data exchange. JWTs can be signed using a secret (with the HMAC algorithm) or a public/private key pair using RSA or ECDSA.
+
+- Structure of JWT
+  A JWT is composed of three parts, separated by dots (.):
+
+1. Header : The header typically consists of two parts: the type of the token, which is JWT, and the signing algorithm being used, such as HMAC SHA256 or RSA.
+2. Payload : The payload contains the claims. Claims are statements about an entity (typically, the user) and additional data. There are three types of claims: registered, public, and private claims.
+
+- Registered claims: Predefined claims which are not mandatory but recommended to provide a set of useful, interoperable claims. Some examples are iss (issuer), exp (expiration time), sub (subject), and aud (audience).
+
+- Public claims: Claims that are public and can be defined at will by those using JWTs. However, to avoid collisions, they should be defined in the IANA JSON Web Token Registry or be defined using a collision-resistant namespace.
+
+- Private claims: Custom claims created to share information between parties that agree on using them.
+
+3. Signature : To create the signature part, you have to take the encoded header, the encoded payload, a secret, and the algorithm specified in the header, and sign that.
+
+- How JWT Works
+
+1. Client requests for a token: The client authenticates with the server using their credentials (e.g., username and password). The server verifies the credentials and issues a JWT.
+
+2. Client stores the token: The JWT is sent to the client and can be stored in local storage, session storage, or a cookie.
+
+3. Client sends the token: The client includes the JWT in the Authorization header of subsequent requests to the server.
+
+4. Server verifies the token: The server extracts and verifies the JWT using the secret or public key. If the token is valid, the server processes the request. If not, the server rejects the request.
+
+- Benefits of JWT
+  1. Compact: JWTs are compact, making them easy to send in URLs, POST parameters, or inside HTTP headers.
+  2. Self-contained: JWTs contain all the necessary information about the user, eliminating the need to query the database multiple times.
+  3. Security: The payload of a JWT is securely signed, ensuring data integrity and authenticity.
+
 ### 12. Create login route
 
 ### 13. Check to see if you're authenticated
