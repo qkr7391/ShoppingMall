@@ -1336,6 +1336,53 @@ userSchema.pre("save", async function (next) {
 
 ### 09. Create Login Page
 
+1. Create UI - Same as Register page [copy/paste and edit]
+
+[frontend/src/LoginPage/index.jsx]
+
+2. thunkFunction - loginUser function implement
+   [frontend/src/store/thunkFunction.js]
+
+```js
+//payload creator
+export const loginUser = createAsyncThunk(
+	"user/loginUser", // type prefix
+
+	async (body, thunkAPI) => {
+		try {
+			const response = await axiosInstance.post(
+				`/user/login`, //end point
+				body // email, password
+			);
+			return response.data; //Passing data from the backend
+		} catch (error) {
+			console.error(error);
+			return thunkAPI.rejectWithValue(error.response.data || error.message);
+		}
+	}
+);
+```
+
+3. The value you send as response.data in the thunkFunction comes into the userSlice as action.payload.
+   [frontend/src/store/userSlice.js]
+
+```js
+.addCase(loginUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(loginUser.fulfilled, (state) => {
+				state.isLoading = false;
+				state.userData = action.payload; //Data from backend
+				state.inAuth = true;
+				localStorage.setItem("accessToken", action.payload.accessToken);
+			})
+			.addCase(loginUser.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload;
+				toast.error(action.payload);
+			});
+```
+
 ### 10. Why authentication is required
 
 ### 11. About JWT

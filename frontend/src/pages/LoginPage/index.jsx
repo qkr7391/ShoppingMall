@@ -1,5 +1,8 @@
 import React from "react";
 
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+
 const LoginPage = () => {
 	const {
 		register,
@@ -15,7 +18,7 @@ const LoginPage = () => {
 			email,
 			password,
 		};
-		dispatch(registerUser(body));
+		dispatch(loginUser(body));
 		reset();
 	};
 

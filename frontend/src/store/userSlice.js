@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { registerUser } from "./thunkFunction";
-import { toast } from "react-toastify";
+import { registerUser, loginUser } from "./thunkFunction";
 
 const initialState = {
 	userData: {
@@ -29,6 +28,20 @@ const userSlice = createSlice({
 				toast.info("Sing up success.");
 			})
 			.addCase(registerUser.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload;
+				toast.error(action.payload);
+			})
+			.addCase(loginUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(loginUser.fulfilled, (state) => {
+				state.isLoading = false;
+				state.userData = action.payload;
+				state.isAuth = true; //login state true/false
+				localStorage.setItem("accessToken", action.payload.accessToken);
+			})
+			.addCase(loginUser.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload;
 				toast.error(action.payload);
