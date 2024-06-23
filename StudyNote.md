@@ -1315,6 +1315,25 @@ Workaround: Give salt a random value and save the hashed value with a new value.
 
 ### 08. Enforce password encryption at signup
 
+In the userSchema we created earlier, we have a pre method that allows us to run this part of the userSchema before storing the password. This will allow us to salt and hash the password before it is stored as-is and make it secure.
+
+1. npm install bcryptjs
+2. [backend/src/models/User.js]
+
+```js
+//add after Schema
+
+userSchema.pre("save", async function (next) {
+	let user = this;
+	if (user.isModified("password")) {
+		const salt = await bcrypt.genSalt(10);
+		const hash = await bcrypt.hash(user.password, salt);
+		user.password = hash;
+	}
+	next();
+});
+```
+
 ### 09. Create Login Page
 
 ### 10. Why authentication is required
