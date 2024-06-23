@@ -1385,6 +1385,56 @@ export const loginUser = createAsyncThunk(
 
 ### 10. Why authentication is required
 
+- Knowledge required to implement authentication services
+
+* HTTP is a stateless protocol, meaning each request from a client to a server is independent; the server does not retain any information about previous requests. Each request contains all the information the server needs to fulfill that request.
+
+* Managing State in Stateless HTTP
+  While HTTP itself is stateless, web applications often need to manage state to provide a consistent user experience, such as remembering user login status, maintaining shopping cart contents, or tracking user preferences. This state management is achieved using various techniques:
+
+1. Cookies
+   Cookies are small pieces of data stored on the client's browser and sent with each request to the server.
+
+Example:
+
+```http
+Set-Cookie: sessionId=abc123; Expires=Wed, 09 Jun 2021 10:18:14 GMT
+```
+
+Usage: Store session identifiers, user preferences, or authentication tokens.
+
+2. Sessions
+   Sessions store data on the server, with a unique session identifier sent to the client (often in a cookie). The server uses this identifier to retrieve the stored session data.
+
+Example (Express.js with session middleware):
+
+```js
+const session = require("express-session");
+app.use(
+	session({
+		secret: "mySecret",
+		resave: false,
+		saveUninitialized: true,
+		cookie: { secure: true },
+	})
+);
+```
+
+Usage: Track user login status, store temporary data across multiple requests.
+
+3. Tokens (e.g., JWT)
+   Tokens, like JSON Web Tokens (JWT), are another method to manage state. The server generates a token containing user information, which is then sent to the client. The client includes the token in subsequent requests, and the server validates it.
+
+Example:
+
+```js
+const jwt = require("jsonwebtoken");
+const token = jwt.sign({ userId: user.id }, "secretKey", { expiresIn: "1h" });
+```
+
+Usage: Authentication and authorization, where the
+token contains user credentials or roles.
+
 ### 11. About JWT
 
 ### 12. Create login route
