@@ -14,4 +14,32 @@ router.post("/register", async (req, res, next) => {
 	}
 });
 
+router.post("/login", async (req, res, next) => {
+	try {
+		const user = await User.findOne({ email: req.body.email });
+
+		if (!user) {
+			return res.status(400).send("This user does not exist.");
+		}
+
+		const isMatch = await user.comparePassword(req.body.password);
+		if (!isMatch) {
+			return res.status(400).send("The passwords don't match.");
+		}
+
+		const payload = {
+			userId: user._id.toHexString(),
+		};
+
+		const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+			expiresIn: "1h",
+		});
+
+		return res.json({ user, accessToken });
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
 module.exports = router;
