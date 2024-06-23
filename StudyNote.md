@@ -1301,6 +1301,18 @@ Therefore, the reason the error disappeared when using separate, explicitly defi
 
 ### 07. Encrypting password
 
+When storing user information in the data, unencrypted passwords are still being stored. This situation is not good for security, so you should encrypt and store passwords.
+
+There are three main ways to encrypt
+
+1. save the original password as is -> the worst way.
+
+2. encrypting the password with the encryption key (two-way): encrypting the password with any password and decrypting it with the encryption key -> if the encryption key is exposed, the algorithm is mostly open, so there is a high risk of security threats.
+
+3. Hash and store (one-way): Password cannot be decrypted, -> You can create a rainbow table to compare encrypted passwords to find out the password.
+
+Workaround: Give salt a random value and save the hashed value with a new value.
+
 ### 08. Enforce password encryption at signup
 
 ### 09. Create Login Page
