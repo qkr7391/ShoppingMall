@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LandingPage";
+import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NavBar from "./layout/NavBar";
 import Footer from "./layout/Footer";

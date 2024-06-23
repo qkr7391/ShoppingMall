@@ -2,6 +2,7 @@ import React from "react";
 
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { loginUser } from "../../store/thunkFunction";
 
 const LoginPage = () => {
 	const {
@@ -89,7 +90,7 @@ const LoginPage = () => {
 					</div>
 
 					<p className="mt-8 text-xs font-light text-center text-gray-700">
-						Don't have a ID?
+						Do not have a ID?
 						<a href="/register" className="font-medium hover:underline">
 							Sign up
 						</a>

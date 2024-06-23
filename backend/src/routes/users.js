@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User"); // Ensure this path is correct
+const jwt = require("jsonwebtoken");
 
 // Route to register a new user
 router.post("/register", async (req, res, next) => {
@@ -14,6 +15,7 @@ router.post("/register", async (req, res, next) => {
 	}
 });
 
+// Route to login a user
 router.post("/login", async (req, res, next) => {
 	try {
 		const user = await User.findOne({ email: req.body.email });
@@ -27,15 +29,17 @@ router.post("/login", async (req, res, next) => {
 			return res.status(400).send("The passwords don't match.");
 		}
 
+		//create payload
 		const payload = {
-			userId: user._id.toHexString(),
+			userId: user._id.toHexString(), // mongoDB's ID is object, so need to change to string
 		};
 
+		//create JWT
 		const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
-			expiresIn: "1h",
+			expiresIn: "1h", // Validity options
 		});
 
-		return res.json({ user, accessToken });
+		return res.json({ user, accessToken }); //send to Client
 	} catch (error) {
 		console.error(error);
 		next(error);

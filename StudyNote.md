@@ -1471,6 +1471,48 @@ token contains user credentials or roles.
 
 ### 12. Create login route
 
+1. [backend/src/routes/users.js]
+
+```js
+router.post("/login", async (req, res, next) => {
+	try {
+		const user = await User.findOne({ email: req.body.email });
+
+		if (!user) {
+			return res.status(400).send("This user does not exist.");
+		}
+
+		const isMatch = await user.comparePassword(req.body.password);
+		if (!isMatch) {
+			return res.status(400).send("The passwords don't match.");
+		}
+
+		const payload = {
+			userId: user._id.toHexString(),
+		};
+
+		const accessToken = jwt.sign(payload, process.env.JWT_SECRET, {
+			expiresIn: "1h",
+		});
+
+		return res.json({ user, accessToken });
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+```
+
+2. [backend/src/Models/User.js]
+
+```js
+userSchema.methods.comparePassword = async function (plainPassword) {
+	let user = this;
+	const match = await bcrypt.compare(plainPassword, user.password);
+	return match;
+};
+```
+
 ### 13. Check to see if you're authenticated
 
 ### 14. NotSuthRoutes, ProtectedRoutes
