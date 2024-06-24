@@ -1632,7 +1632,67 @@ let auth = async (req, res, next) => {
 });
 ```
 
-### 14. NotSuthRoutes, ProtectedRoutes
+### 14. NotAuthRoutes, ProtectedRoutes
+
+Make it possible to differentiate which pages are accessible based on whether you're logged in, etc.
+
+0. [App.jsx]
+
+```js
+<Routes>
+	<Route path="/" element={<Layout />}>
+		<Route path="/" element={<LandingPage />} />
+
+		{/* with Login only */}
+		<Route element={<ProtectedRoutes isAuth={isAuth} />}>
+			<Route path="/protected" element={<ProtectedPage />} />
+		</Route>
+
+		{/* without Login only */}
+		<Route element={<NotAuthRoutes isAuth={isAuth} />}>
+			<Route path="/login" element={<LoginPage />} />
+			<Route path="/register" element={<RegisterPage />} />
+		</Route>
+```
+
+1. ProtectedRoutes : What you need to make accessible to people who aren't logged in when they log in
+
+[components/ProtectedRoutes.jsx]
+
+```js
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
+
+const ProtectedRoutes = ({ isAuth }) => {
+	return isAuth ? <Outlet /> : <Navigate to={"/login"} />;
+};
+
+ProtectedRoutes.propTypes = {
+	isAuth: PropTypes.bool.isRequired,
+};
+export default ProtectedRoutes;
+```
+
+2. NotAuthRoutes : What you need to block access when a logged-in person tries to access the signup or login page
+
+[components/NotAuthRoutes.jsx]
+
+```js
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
+import PropTypes from "prop-types";
+
+const NotAuthRoutes = ({ isAuth }) => {
+	return isAuth ? <Navigate to={"/"} /> : <Outlet />;
+};
+
+NotAuthRoutes.propTypes = {
+	isAuth: PropTypes.bool.isRequired,
+};
+
+export default NotAuthRoutes;
+```
 
 ### 15. NavBar
 

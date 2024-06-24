@@ -12,6 +12,9 @@ import Footer from "./layout/Footer";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { authUser } from "./store/thunkFunction";
+import ProtectedPage from "./pages/ProtectedPage";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import NotAuthRoutes from "./components/NotAuthRoutes";
 
 // import NotAuthRoutes from "./components/NotAuthRoutes";
 // import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -50,12 +53,19 @@ function App() {
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>
-				{/* without Login */}
 				<Route path="/" element={<LandingPage />} />
-				<Route path="/login" element={<LoginPage />} />
-				<Route path="/register" element={<RegisterPage />} />
 
-				{/* with Login */}
+				{/* with Login only */}
+				<Route element={<ProtectedRoutes isAuth={isAuth} />}>
+					<Route path="/protected" element={<ProtectedPage />} />
+				</Route>
+
+				{/* without Login only */}
+				<Route element={<NotAuthRoutes isAuth={isAuth} />}>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/register" element={<RegisterPage />} />
+				</Route>
+
 				{/* <Route element={<ProtectedRoutes />}>
 					<Route path="product/upload" element={<UploadProductPage />} />
 					<Route path="product/:productId" element={<DetailProductPage />} />
