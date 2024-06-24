@@ -1739,6 +1739,121 @@ export default NavBar;
 
 ### 16. NavBar Item
 
+1. [Login / Register /Logout] - routes implement
+
+[layout/NavBar/Sections/NavItem.jsx]
+
+```js
+import React from "react";
+import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../../../store/thunkFunction";
+// import { AiOutlineShoppingCart } from "react-icons/ai";
+// import { useRouteId } from "react-router/dist/lib/hooks";
+
+const routes = [
+	{ to: "/login", name: "Sign In", auth: false },
+	{ to: "/register", name: "Sign Up", auth: false },
+	{ to: "", name: "Logout", auth: true },
+];
+
+const NavItem = ({ mobile }) => {
+	const isAuth = useSelector((state) => state.user?.isAuth);
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+		try {
+			dispatch(logoutUser());
+			navigate("login");
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	return (
+		<ul
+			className={`text-md justify-center w-full flex gap-4 ${
+				mobile && "flex-col bg-gray-900 h-full"
+			} items-center`}
+		>
+			{routes.map(({ to, name, auth }) => {
+				if (isAuth !== auth) return null;
+
+				if (name === "Logout") {
+					return (
+						<li
+							key={name}
+							className="py-2 text-center border-b-4 cursor-pointer"
+						>
+							<Link onClick={handleLogout}>{name}</Link>
+						</li>
+					);
+				}
+				//  else if (icon) {
+
+				//  }
+				else {
+					return (
+						<li
+							key={name}
+							className="py-2 text-center border-b-4 cursor-pointer"
+						>
+							<Link to={to} key={name}>
+								{name}
+							</Link>
+						</li>
+					);
+				}
+			})}
+		</ul>
+	);
+};
+
+NavItem.propTypes = {
+	mobile: PropTypes.bool.isRequired,
+};
+
+export default NavItem;
+```
+
+[thunkFunction.js]
+
+```js
+export const logoutUser = createAsyncThunk(
+	"user/logoutUser",
+	async (_, thunkAPI) => {
+		try {
+			const response = await axiosInstance.get(`/users/logout`);
+		} catch (error) {
+			console.log(error);
+			return thunkAPI.rejectWithValue(error.response.dataa || error.message);
+		}
+	}
+);
+```
+
+[usesrSlice.js]
+
+```js
+			.addCase(logoutUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(logoutUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.userData = initialState.userData;
+				state.isAuth = false;
+				localStorage.removeItem("accessToken");
+			})
+			.addCase(logoutUser.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload;
+				toast.error(action.payload);
+			});
+```
+
 ### 17. Handling token expiration
 
 ```
