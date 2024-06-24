@@ -2067,6 +2067,8 @@ backend - npm install async multer
 
 ### 2. Create the product upload page UI
 
+[UploadProductPage/index.jsx]
+
 ### 3. Creating the product upload page functionality
 
 ### 4. Creating a file upload component
