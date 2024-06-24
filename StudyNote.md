@@ -1894,3 +1894,29 @@ axiosInstance.interceptors.response.use(
    Regulatory Requirements: Some industries and regulations require that user sessions and authentication tokens have a maximum lifespan to protect user data and ensure secure access.
 5. User Convenience
    Improved User Experience: Expiring tokens can help manage stale sessions and prompt users to re-login, ensuring they have a fresh and secure session, especially in applications where users might stay logged in for long periods.
+
+## Lecture 15 - Implemeting Product creation, main page Function
+
+---
+
+### 1. Adding source code for the Shop app
+
+### 2. Create the product upload page UI
+
+### 3. Creating the product upload page functionality
+
+### 4. Creating a file upload component
+
+### 5. Uploading files using Multer
+
+### 6. Creating a landing page
+
+### 7. Creating a Route to fetch product data
+
+### 8. Creating a More feature
+
+### 9. Creating a checkbox filter feature
+
+### 10. Create a rainbow filter feature
+
+### 11. Creating a search feature
