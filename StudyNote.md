@@ -1855,7 +1855,3 @@ export const logoutUser = createAsyncThunk(
 ```
 
 ### 17. Handling token expiration
-
-```
-
-```
