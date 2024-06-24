@@ -1766,8 +1766,9 @@ const NavItem = ({ mobile }) => {
 
 	const handleLogout = async () => {
 		try {
-			dispatch(logoutUser());
-			navigate("login");
+			dispatch(logoutUser()).then(() => {
+				navigate("/login");
+			});
 		} catch (error) {
 			console.error(error);
 		}
@@ -1826,7 +1827,7 @@ export const logoutUser = createAsyncThunk(
 	"user/logoutUser",
 	async (_, thunkAPI) => {
 		try {
-			const response = await axiosInstance.get(`/users/logout`);
+			const response = await axiosInstance.post(`/users/logout`);
 		} catch (error) {
 			console.log(error);
 			return thunkAPI.rejectWithValue(error.response.dataa || error.message);

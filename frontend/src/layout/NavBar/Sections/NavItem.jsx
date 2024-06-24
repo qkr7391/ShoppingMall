@@ -20,8 +20,9 @@ const NavItem = ({ mobile }) => {
 
 	const handleLogout = async () => {
 		try {
-			dispatch(logoutUser());
-			navigate("login");
+			dispatch(logoutUser()).then(() => {
+				navigate("/login");
+			});
 		} catch (error) {
 			console.error(error);
 		}

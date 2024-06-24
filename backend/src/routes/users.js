@@ -60,4 +60,13 @@ router.post("/login", async (req, res, next) => {
 	}
 });
 
+router.post("/logout", auth, async (req, rex, next) => {
+	try {
+		return res.sendStatus(200);
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+});
+
 module.exports = router;
