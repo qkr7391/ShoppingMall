@@ -1901,6 +1901,170 @@ axiosInstance.interceptors.response.use(
 
 ### 1. Adding source code for the Shop app
 
+1. add to pages [CartPage, DetailProductPage, OrdersPage, UploadProductPage]
+
+2. [App.jsx]
+
+```js
+import UploadProductPage from "./pages/UploadProductPage";
+import DetailProductPage from "./pages/DetailProductPage";
+import CartPage from "./pages/CartPage";
+import OrdersPage from "./pages/OrdersPage";
+
+<Route path="/product/upload" element={<UploadProductPage />} />
+<Route path="/product/:productId" element={<DetailProductPage />} />
+<Route path="/user/cart" element={<CartPage />} />
+<Route path="/Orders" element={<HistoryPage />} />
+```
+
+3. adding Models [products, payments]
+
+- products : Product-by-product data
+
+- payments : Ordered records
+
+[models/User.js]
+
+```js
+const userSchema = mongoose.Schema({
+	...
+	cart: {
+		type: Array,
+		default: [],
+	},
+	orders: {
+		type: Array,
+		default: [],
+	},
+	...
+```
+
+[models/Product.js]
+
+```js
+const { default: mongoose } = require("mogoose");
+
+const productSchema = mongoose.Schema({
+	writer: {
+		type: Schema.Types.ObjectId,
+		ref: "User",
+	},
+	title: {
+		type: String,
+		maxLength: 30,
+	},
+	description: String,
+	price: {
+		type: Number,
+		default: 0,
+	},
+	images: {
+		type: Array,
+		default: [],
+	},
+	sold: {
+		type: Number,
+		default: 0,
+	},
+	continents: {
+		type: Number,
+		default: 1,
+	},
+	views: {
+		type: Number,
+		default: 0,
+	},
+});
+
+productSchema.index(
+	{
+		title: "text",
+		description: "text",
+	},
+	{
+		weights: {
+			title: 5,
+			description: 1,
+		},
+	}
+);
+
+const Product = mongoose.model("Product", productSchema);
+
+module.exports = Product;
+```
+
+[models/Payment.js]
+
+```js
+const { default: mongoose } = require("mogoose");
+
+const paymentSchema = mongoose.Schema(
+	{
+		user: {
+			type: Object,
+		},
+		data: {
+			type: Array,
+			default: [],
+		},
+		product: {
+			type: Array,
+			default: [],
+		},
+	},
+	{ timestamps: true }
+);
+
+const Payment = mongoose.model("Payment", paymentSchema);
+
+module.exports = Payment;
+```
+
+4. adding
+   [NavItems.js]
+
+```js
+
+{ to: "/product/upload", name: "Upload", auth: true },
+{
+to: "/user/cart",
+name: "Cart",
+auth: true,
+icon: <AiOutlineShoppingCart style={{ fontSize: "1.4rem" }} />,
+},
+{ to: "/orders", name: "Orders", auth: true },
+
+
+else if (icon) {
+	return (
+		<li
+			className="relative py-2 text-center border-b-4 cursor-pointer"
+			key={name}
+		>
+			<Link to={to}>
+				{icon}
+				<span className="absolute top-0 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white border-2 border-white rounded-full -right-3">
+					{cart ? cart.length : 0}
+				</span>
+			</Link>
+		</li>
+	);
+```
+
+5. route add
+   [routes/users.js]
+
+```js
+	cart: req.user.cart,
+	orders: req.user.orders,
+});
+```
+
+frontend - npm install react-dropzone react-image-gallery react-responsive-carousel
+
+backend - npm install async multer
+
 ### 2. Create the product upload page UI
 
 ### 3. Creating the product upload page functionality
