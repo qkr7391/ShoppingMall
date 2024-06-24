@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes, Outlet, useLocation } from "react-router-dom";
 // import "./App.css";
 
 import { ToastContainer } from "react-toastify";
@@ -9,6 +9,9 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NavBar from "./layout/NavBar";
 import Footer from "./layout/Footer";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser } from "./store/thunkFunction";
 
 // import NotAuthRoutes from "./components/NotAuthRoutes";
 // import ProtectedRoutes from "./components/ProtectedRoutes";
@@ -36,6 +39,14 @@ function Layout() {
 }
 
 function App() {
+	const dispatch = useDispatch();
+	const isAuth = useSelector((state) => state.user?.isAuth);
+	const { pathname } = useLocation();
+	useEffect(() => {
+		if (isAuth) {
+			dispatch(authUser());
+		}
+	}, [isAuth, pathname, dispatch]);
 	return (
 		<Routes>
 			<Route path="/" element={<Layout />}>

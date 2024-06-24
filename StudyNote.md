@@ -1513,7 +1513,124 @@ userSchema.methods.comparePassword = async function (plainPassword) {
 };
 ```
 
-### 13. Check to see if you're authenticated
+### 13. Check to see if user is authenticated
+
+The part that checks if the user is accessing with a valid token.
+
+1. [frontend/src/App.jsx]
+
+```js
+function App() {
+	const dispatch = useDispatch();
+	const isAuth = useSelector((state) => state.user?.isAuth);
+	const { pathname } = useLocation();
+	useEffect(() => {
+		if (isAuth) {
+			dispatch(authUser());
+		}
+	}, [isAuth, pathname, dispatch]);
+	...
+```
+
+2. [thunkFunction.js]
+
+```js
+export const authUser = createAsyncThunk(
+	"user/authUser",
+	async (_, thunkAPI) => {
+		try {
+			const response = await axiosInstance.get(`/users/autgh`);
+			return response.data;
+		} catch (error) {
+			console.error(error);
+			return thunkAPI.rejectWithValue(error.response.data || error.message);
+		}
+	}
+);
+```
+
+3. [utils/axios.js]
+
+```js
+axiosInstance.interceptors.request.use(
+	function (config) {
+		// The request is sent with a 'Bearer' token as Authorization in the request header.
+		config.headers.Authorization =
+			"Bearer " + localStorage.getItem("accessToken");
+		return config;
+	},
+	function (error) {
+		return Promise.reject(error);
+	}
+);
+```
+
+4. [backend/src/routes/users.js]
+
+```js
+router.get("auth", auth, (req, res) => {
+	return res.status(200).json({
+		_id: req.user._id,
+		email: req.user.email,
+		name: req.user.name,
+		role: req.user.role,
+		image: req.user.image,
+		cart: req.user.cart,
+		history: req.user.history,
+	});
+});
+```
+
+5. [backend/src/middleware/auth.js]
+
+```js
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+
+let auth = async (req, res, next) => {
+	//get token from request headers
+	const authHeader = req.headers["authorization"];
+
+	//Bearer
+	const token = authHeader && authHeader.split(" ")[1];
+	if (token === null) {
+		return res.sendStatus(401);
+	}
+
+	try {
+		const decode = jwt.verify(token, process.env.JWT_SECRET);
+		const user = await User.findOne({ _id: decode.userId });
+
+		if (!user) {
+			return res.status(400).send("This user does not exist.");
+		}
+	} catch (error) {
+		console.error(error);
+		next(error);
+	}
+};
+```
+
+6. Put the json data from the router into state.userData and adjust the state for each situation
+   [store/userSlice.js]
+
+```js
+//adding
+.addCase(authUser.pending, (state) => {
+	state.isLoading = true;
+})
+.addCase(authUser.fulfilled, (state, action) => {
+	state.isLoading = false;
+	state.userData = action.payload;
+	state.isAuth = true; //login state true/false
+})
+.addCase(authUser.rejected, (state, action) => {
+	state.isLoading = false;
+	state.error = action.payload;
+	state.isAuth = false;
+	localStorage.removeItem("accessToken");
+});
+```
 
 ### 14. NotSuthRoutes, ProtectedRoutes
 
