@@ -9,15 +9,15 @@ const NavBar = () => {
 		setMenu(!menu);
 	};
 	return (
-		<section className="relativ z-10 text-white bg-gray-900">
+		<section className="relative z-10 text-white bg-gray-900">
 			<div className="w-full">
 				<div className="flex items-center justify-between mx-5 sm:mx-10 lg:mx-20">
 					{/* logo */}
 					<div className="flex items-center text-2xl h-14">
-						<Link to="/"> Logo</Link>
+						<Link to="/"> Logo </Link>
 					</div>
 
-					{/* menu button */}
+					{/* menu button  - show up when window is small */}
 					<div className="text-2xl sm:hidden">
 						<button onClick={handleMenu}>{menu ? "-" : "+"}</button>
 					</div>
@@ -29,7 +29,7 @@ const NavBar = () => {
 				</div>
 
 				{/* moobile size nav-items */}
-				<div className="hidden sm:block">{menu && <NavItem mobile />}</div>
+				<div className="block sm:hidden">{menu && <NavItem mobile />}</div>
 			</div>
 		</section>
 	);

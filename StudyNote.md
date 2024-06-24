@@ -1728,7 +1728,7 @@ const NavBar = () => {
 				</div>
 
 				{/* moobile size nav-items */}
-				<div className="hidden sm:block">{menu && <NavItem mobile />}</div>
+				<div className="block sm:hidden">{menu && <NavItem mobile />}</div>
 			</div>
 		</section>
 	);
