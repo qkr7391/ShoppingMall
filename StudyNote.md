@@ -1856,3 +1856,41 @@ export const logoutUser = createAsyncThunk(
 ```
 
 ### 17. Handling token expiration
+
+The current code generates a token at login, which is valid for 1 hour. (optional)
+So after 1 hour, the token expires and can't be used, and if you do something like log out after the token expires, you'll get the error JWT expired.
+
+What can we do to fix this?
+
+1. issue a refresh token at the same time as login and renew the access token.
+
+2. use axios.Instance.interceptors to reload when error.response.data is 'jwt expired'
+
+[frontend/src/utils/axios.js]
+
+```js
+axiosInstance.interceptors.response.use(
+	function (response) {
+		return response;
+	},
+	function (error) {
+		if (error.response.data === "jwt expired") {
+			window.location.reload();
+		}
+		return Promise.reject(error);
+	}
+);
+```
+
+- Setting an expiration time on tokens is important for several reasons, including security, resource management, and session control.
+
+1. Enhanced Security
+   Preventing Token Misuse: If a token is leaked or intercepted, an attacker could potentially use it indefinitely. By setting an expiration time, the token will only be valid for a limited period, reducing the risk of long-term misuse.
+2. Resource Management
+   Efficient Resource Use: Tokens that never expire can lead to increased load on the server, as the server has to keep track of these tokens indefinitely. Expiring tokens help manage and free up server resources.
+3. Session Management
+   User Session Control: Setting an expiration time allows for better control over user sessions. This ensures that users need to re-authenticate after a certain period, which can be useful for applications requiring a higher level of security.
+4. Compliance
+   Regulatory Requirements: Some industries and regulations require that user sessions and authentication tokens have a maximum lifespan to protect user data and ensure secure access.
+5. User Convenience
+   Improved User Experience: Expiring tokens can help manage stale sessions and prompt users to re-login, ensuring they have a fresh and secure session, especially in applications where users might stay logged in for long periods.
