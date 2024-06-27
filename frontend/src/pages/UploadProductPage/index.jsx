@@ -4,7 +4,15 @@ import axiosInstance from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 import FileUpload from "../../components/FileUpload";
 
-const continents = [{ key: 1, value: "Asia" }];
+const continents = [
+	{ key: 1, value: "Asia" },
+	{ key: 2, value: "Afirica" },
+	{ key: 3, value: "Eurpoe" },
+	{ key: 4, value: "Australia" },
+	{ key: 5, value: "North America" },
+	{ key: 6, value: "South America" },
+	{ key: 7, value: "Antarctica" },
+];
 
 const UploadProductPage = () => {
 	const [product, setProduct] = useState({
@@ -52,14 +60,14 @@ const UploadProductPage = () => {
 	return (
 		<section>
 			<div className="text-center m-7">
-				<h1>Product Upload</h1>
+				<h1>Travel Product Upload</h1>
 			</div>
 
 			<form className="mt-6" onSubmit={handleSubmit}>
 				<FileUpload images={product.images} onImageChange={handleImages} />
 
 				<div className="mt-4">
-					<label htmlFor="title">Subject</label>
+					<label htmlFor="title">Title</label>
 					<input
 						className="w-full px-4 py-2 bg-white border rounded-md"
 						name="title"
