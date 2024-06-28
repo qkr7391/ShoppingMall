@@ -2368,6 +2368,25 @@ VITE_SERVER_URL=
 
 ### 5. Uploading files using Multer
 
+Allow the backend to receive images sent from the server, save them to data, and store them in the upload folder.
+
+- multer : Multer is a middleware for handling multipart/form-data, which is primarily used for uploading files. It is typically used in Node.js web applications with frameworks like Express to handle file uploads seamlessly.
+
+* File Uploads: Multer simplifies the process of handling file uploads by parsing multipart/form-data from the request body. It extracts files and other form data submitted via POST requests.
+
+* Integration with Express: Multer is designed to work seamlessly with Express.js, a popular web framework for Node.js. It integrates easily into the middleware stack of an Express application.
+
+* Configuration: You can configure Multer to specify where uploaded files should be stored, set limits on the size and number of files, rename files, and handle various aspects of the upload process.
+
+* Middleware: Multer acts as middleware in your Express application. You can use it to handle single or multiple file uploads in a single request and process the uploaded files before passing control to the next middleware.
+
+1. npm install multer
+2. [routes/products.js]
+
+```js
+
+```
+
 ### 6. Creating a landing page
 
 ### 7. Creating a Route to fetch product data

@@ -53,9 +53,7 @@ const userSlice = createSlice({
 			})
 			.addCase(authUser.fulfilled, (state, action) => {
 				state.isLoading = false;
-				console.log("Payload on login fulfilled: ", action.payload);
 				state.userData = action.payload;
-				console.log("Updated state: ", state.userData); // Debug log
 				state.isAuth = true; //login state true/false
 			})
 			.addCase(authUser.rejected, (state, action) => {
