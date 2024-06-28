@@ -36,10 +36,15 @@ app.post("/", (req, res) => {
 const usersRouter = require("./routes/users");
 app.use("/users", usersRouter);
 
+const productsRouter = require("./routes/products");
+app.use("/products", productsRouter);
+
+// Error Handling Middleware
 app.use((error, req, res, next) => {
 	console.error(error.stack); // Log the error stack trace
 	res.status(500).send("Internal Server Error");
 });
+
 //Use absolute paths to be accessible from any path
 app.use(express.static(path.join(__dirname, "../uploads")));
 

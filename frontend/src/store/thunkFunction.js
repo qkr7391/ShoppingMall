@@ -33,9 +33,10 @@ export const authUser = createAsyncThunk(
 	async (_, thunkAPI) => {
 		try {
 			const response = await axiosInstance.get(`/users/auth`);
+			return response.data;
 		} catch (error) {
 			console.log(error);
-			return thunkAPI.rejectWithValue(error.response.dataa || error.message);
+			return thunkAPI.rejectWithValue(error.response.data || error.message);
 		}
 	}
 );

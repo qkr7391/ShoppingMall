@@ -2206,6 +2206,88 @@ export default UploadProductPage;
 
 ### 3. Creating the product upload page functionality
 
+- The part that stores the value from the user in the state value
+
+1. Create 'State'
+   [UploadProductPage/index.jsx]
+
+```js
+import React, { useState } from "react";
+
+const UploadProductPage = () => {
+	const [product, setProduct] = useState({
+		title: "",
+		description: "",
+		price: 0,
+		continents: 1,
+		images: [],
+	});
+
+```
+
+2. Create 'handler function'
+   [UploadProductPage/index.jsx]
+
+```js
+//Actions when there is a change in title, description, price, continents
+const handleChange = (event) => {
+	const { name, value } = event.target;
+	setProduct((prevState) => ({
+		...prevState,
+		[name]: value,
+	}));
+};
+
+// Functions that help you submit what you've written when the Upload button is pressed
+const userData = useSelector((state) => state.user?.userData);
+const navigate = useNavigate();
+
+const handleSubmit = async (event) => {
+	event.preventDefault(); //prevent page refresh
+
+	if (!userData) {
+		console.error("User data is missing");
+		return;
+	}
+
+	const body = {
+		writer: userData.id,
+		...product,
+	};
+
+	try {
+		await axiosInstance.post("products", body);
+		navigate("/");
+	} catch (error) {
+		console.error(error);
+	}
+};
+```
+
+3. Creact upload route
+   [backend/src/routes/products.js]
+
+```js
+// Route to upload new product
+router.post("/", auth, async (req, res, next) => {
+	try {
+		const product = new Product(req.body);
+		await product.save();
+		return res.sendStatus(201);
+	} catch (error) {
+		console.error(error);
+		next(error); // Pass the error to the error handler middleware
+	}
+});
+```
+
+4. [backend/index.js]
+
+```js
+const productsRouter = require("./routes/products");
+app.use("/products", productsRouter);
+```
+
 ### 4. Creating a file upload component
 
 ### 5. Uploading files using Multer

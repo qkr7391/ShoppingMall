@@ -28,6 +28,12 @@ const UploadProductPage = () => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		console.log("user data : ", userData);
+
+		if (!userData) {
+			console.error("User data is missing");
+			return;
+		}
 
 		const body = {
 			writer: userData.id,
