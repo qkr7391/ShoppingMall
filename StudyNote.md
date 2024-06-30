@@ -2453,6 +2453,106 @@ const handleDelete = (image) => {
 
 ### 6. Creating a landing page
 
+Create a page to filter and view products
+
+1. Set up the basic structure
+   [LandinPage/index.jsx]
+
+```js
+import React from "react";
+import CheckBox from "./Sections/CheckBox";
+import RadioBox from "./Sections/RadioBox";
+import SearchInput from "./Sections/SearchInput";
+import CardItem from "./Sections/CardItem";
+
+const LandingPage = () => {
+	return (
+		<section>
+			<div className="text-center m-7">
+				<h2 className="text-2xl">Travel Products</h2>
+			</div>
+			{/* filter */}
+			<div className="flex gap-3">
+				<div className="w-1/2">
+					<CheckBox />
+				</div>
+				<div className="w-1/2">
+					<RadioBox />
+				</div>
+			</div>
+			{/* Search */}
+			<div className="flex justify-end mb-3">
+				<SearchInput />
+			</div>
+			{/* Card */}
+			<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+				<CardItem />
+			</div>
+			{/* load more */}
+			<div className="flex justify-center mt-5">
+				<button className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500">
+					more
+				</button>
+			</div>
+		</section>
+	);
+};
+
+export default LandingPage;
+```
+
+2. Implement 'state'
+
+```js
+const limit = 4;
+const [products, setProducts] = useState([]);
+const [skip, setSkip] = useState(0);
+const [hasMore, setHasMore] = useState(false);
+const [filters, setFilters] = useState({
+	continents: [],
+	prices: [],
+});
+
+{
+	/* Card */
+}
+<div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+	{products.map((product) => (
+		<CardItem product={product} key={product._id} />
+	))}
+</div>;
+```
+
+3. Bring Data from mongoDB
+
+```js
+useEffect(() => {
+	fetchProducts({ skip, limit });
+}, []);
+
+const fetchProducts = async ({
+	skip,
+	limit,
+	loadMore = false,
+	filters = {},
+	searchTerm = "",
+}) => {
+	const params = {
+		skip,
+		limit,
+		loadMore,
+		filters,
+		searchTerm,
+	};
+	try {
+		const response = await axiosInstance.get("/products", { params });
+		setProducts(response.data.products);
+	} catch (error) {
+		console.error(error);
+	}
+};
+```
+
 ### 7. Creating a Route to fetch product data
 
 ### 8. Creating a More feature
