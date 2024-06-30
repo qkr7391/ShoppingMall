@@ -11,7 +11,7 @@ const routes = [
 	{ to: "/register", name: "Sign Up", auth: false },
 	{ to: "", name: "Logout", auth: true },
 
-	{ to: "/product/upload", name: "Upload", auth: true },
+	{ to: "/products/upload", name: "Upload", auth: true },
 	{
 		to: "/user/cart",
 		name: "Cart",
