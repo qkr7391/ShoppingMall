@@ -36,4 +36,5 @@ router.post("/image", auth, async (req, res, next) => {
 		return res.json({ fileName: res.req.file.filename });
 	});
 });
+
 module.exports = router;
