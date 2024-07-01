@@ -2641,7 +2641,7 @@ ImageSlider.propTypes = {
 export default ImageSlider;
 ```
 
-### 8. Creating a More feature
+### 8. Creating a 'Load More' feature
 
 ### 9. Creating a checkbox filter feature
 

@@ -34,11 +34,11 @@ router.post("/", auth, async (req, res, next) => {
 			...req.body,
 		};
 
-		console.log("product schema1", productData);
+		// console.log("product schema1", productData);
 
 		const product = new Product(productData);
 		// const product = new Product(req.body);
-		console.log("product schema2", product);
+		// console.log("product schema2", product);
 		await product.save();
 		return res.sendStatus(201);
 	} catch (error) {

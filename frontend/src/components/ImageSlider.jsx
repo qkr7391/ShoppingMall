@@ -4,6 +4,20 @@ import { Carousel } from "react-responsive-carousel";
 import PropTypes from "prop-types";
 
 function ImageSlider({ images }) {
+	// Check if images array is empty
+	if (images.length === 0) {
+		// Render default image
+		return (
+			<div className="w-full max-h-[150px]">
+				<img
+					src={"/assets/Logo.png"}
+					alt="default image"
+					className="w-full h-full object-cover"
+				/>
+			</div>
+		);
+	}
+
 	return (
 		<Carousel autoPlay showThumbs={false} infiniteLoop>
 			{images.map((image) => (
