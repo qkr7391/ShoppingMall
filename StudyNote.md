@@ -2643,6 +2643,54 @@ export default ImageSlider;
 
 ### 8. Creating a 'Load More' feature
 
+1. Create event [LandingPage/index.jsx]
+
+```js
+const handleLoadMore = () => {
+	const body = {
+		skip: skip + limit,
+		limit,
+		loadMore: true,
+		filters,
+	};
+	fetchProducts(body);
+	setSkip(skip + limit);
+};
+
+{
+	/* load more */
+}
+<div className="flex justify-center mt-5">
+	<button
+		onClick={handleLoadMore}
+		className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500"
+	>
+		more
+	</button>
+</div>;
+```
+
+2. Create an API to receive requests when fetchProduct sends a request
+   [routes/products.js]
+
+```js
+router.get("/", async (req, res, next) => {
+	try {
+		const order = req.ruesr.order ? req.query.order : "desc";
+		const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+
+		const products = await Product.find()
+			.populate("writer")
+			.sort([[sortBy, order]]);
+		return res.status(200).json({
+			products,
+		});
+	} catch (error) {
+		next(error);
+	}
+});
+```
+
 ### 9. Creating a checkbox filter feature
 
 ### 10. Create a rainbow filter feature
