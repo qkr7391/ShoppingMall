@@ -42,6 +42,17 @@ const LandingPage = () => {
 		}
 	};
 
+	const handleLoadMore = () => {
+		const body = {
+			skip: skip + limit,
+			limit,
+			loadMore: true,
+			filters,
+		};
+		fetchProducts(body);
+		setSkip(skip + limit);
+	};
+
 	return (
 		<section>
 			<div className="text-center m-7">
@@ -68,7 +79,10 @@ const LandingPage = () => {
 			</div>
 			{/* load more */}
 			<div className="flex justify-center mt-5">
-				<button className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500">
+				<button
+					onClick={handleLoadMore}
+					className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500"
+				>
 					more
 				</button>
 			</div>
