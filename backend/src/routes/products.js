@@ -15,10 +15,30 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single("file");
 
+router.get("/", async (req, res, next) => {
+	try {
+		const products = await Product.find().populate("writer");
+		return res.status(200).json({
+			products,
+		});
+	} catch (error) {
+		next(error);
+	}
+});
+
 // Route to upload new product
 router.post("/", auth, async (req, res, next) => {
 	try {
-		const product = new Product(req.body);
+		const productData = {
+			writer: req.user._id, // Ensure writer is set from authenticated user
+			...req.body,
+		};
+
+		console.log("product schema1", productData);
+
+		const product = new Product(productData);
+		// const product = new Product(req.body);
+		console.log("product schema2", product);
 		await product.save();
 		return res.sendStatus(201);
 	} catch (error) {

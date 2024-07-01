@@ -2555,6 +2555,92 @@ const fetchProducts = async ({
 
 ### 7. Creating a Route to fetch product data
 
+1. backend router
+   [routes/products.js]
+
+```js
+router.get("/", async (req, res, next) => {
+	try {
+		const products = await Product.find().populate("writer");
+		return res.status(200).json({
+			products,
+		});
+	} catch (error) {
+		next(error);
+	}
+});
+```
+
+2. Card Item
+   [CardItem/jsx]
+
+```js
+import React from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+
+function CardItem({ product }) {
+	return (
+		<div className="border-[1px] border-gray-300">
+			<Link to={`/product/${product._id}`}>
+				<p className="p-1">{product.continents}</p>
+				<p className="p-1">{product.title}</p>
+				<p className="p-1 text-xs text-gray-500">CAD ${product.price}</p>
+			</Link>
+		</div>
+	);
+}
+
+CardItem.propTypes = {
+	product: PropTypes.shape({
+		_id: PropTypes.string.isRequired,
+		title: PropTypes.string.isRequired,
+		continents: PropTypes.number.isRequired, // Assuming continents is a number based on userSchema
+		price: PropTypes.number.isRequired,
+		images: PropTypes.arrayOf(PropTypes.string).isRequired,
+	}).isRequired,
+};
+
+export default CardItem;
+```
+
+3. Image Slider : Create a new component to show the images that were registered together when uploading a product as a slide
+
+- Using react-responsive-carousel
+
+  > > react-responsive-carousel is a library for creating responsive image sliders/carousels in React. It's useful for displaying images in a slideshow format with various effects.
+
+  [components/ImageSlider.jsx]
+
+```js
+import React from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
+import PropTypes from "prop-types";
+
+function ImageSlider({ images }) {
+	return (
+		<Carousel autoPlay showThumbs={false} infiniteLoop>
+			{images.map((image) => (
+				<div key={image} style={{ maxHeight: "100px" }}>
+					<img
+						src={`${import.meta.env.VITE_SERVER_URL}/${image}`}
+						alt={image}
+						className="w-full h-full object-cover"
+					/>
+				</div>
+			))}
+		</Carousel>
+	);
+}
+
+ImageSlider.propTypes = {
+	images: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+export default ImageSlider;
+```
+
 ### 8. Creating a More feature
 
 ### 9. Creating a checkbox filter feature
