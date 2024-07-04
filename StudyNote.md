@@ -2676,19 +2676,60 @@ const handleLoadMore = () => {
 ```js
 router.get("/", async (req, res, next) => {
 	try {
-		const order = req.ruesr.order ? req.query.order : "desc";
+		const order = req.query.order ? req.query.order : "desc";
 		const sortBy = req.query.sortBy ? req.query.sortBy : "_id";
+		const limit = req.query.limit ? Number(req.query.limit) : 20;
+		const skip = req.query.skip ? Number(req.query.skip) : 0;
 
 		const products = await Product.find()
 			.populate("writer")
-			.sort([[sortBy, order]]);
+			.sort([[sortBy, order]])
+			.skip(skip)
+			.limit(limit);
+
+		const productsTotal = await Product.countDocuments();
+		const hasMore = skip + limit < productsTotal ? true : false;
+
 		return res.status(200).json({
 			products,
+			hasMore,
 		});
 	} catch (error) {
 		next(error);
 	}
 });
+```
+
+3. [LandingPage/index.jsx]
+
+```js
+try {
+			const response = await axiosInstance.get("/products", { params });
+			if (loadMore) {
+				setProducts((prevProducts) => [
+					...prevProducts,
+					...response.data.products,
+				]);
+			} else {
+				setProducts(response.data.products);
+			}
+			setHasMore(response.data.hasMore);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+{/* load more */}
+		{hasMore && (
+			<div className="flex justify-center mt-5">
+				<button
+					onClick={handleLoadMore}
+					className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500"
+				>
+					more
+				</button>
+			</div>
+		)}
 ```
 
 ### 9. Creating a checkbox filter feature
