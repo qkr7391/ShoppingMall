@@ -8,11 +8,11 @@ function ImageSlider({ images }) {
 	if (images.length === 0) {
 		// Render default image
 		return (
-			<div className="w-full max-h-[150px]">
+			<div className="max-h-[100px]">
 				<img
-					src={"/assets/Logo.png"}
+					src="src/assets/Logo.png"
 					alt="default image"
-					className="w-full h-full object-cover"
+					className="w-full h-full object-cover max-h-[100px]"
 				/>
 			</div>
 		);

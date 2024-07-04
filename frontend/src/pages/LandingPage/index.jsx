@@ -10,7 +10,7 @@ const LandingPage = () => {
 	const limit = 4;
 	const [products, setProducts] = useState([]);
 	const [skip, setSkip] = useState(0);
-	const [hasMore, setHasMore] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
 	const [filters, setFilters] = useState({
 		continents: [],
 		prices: [],
@@ -30,27 +30,35 @@ const LandingPage = () => {
 		const params = {
 			skip,
 			limit,
-			loadMore,
 			filters,
 			searchTerm,
 		};
 		try {
 			const response = await axiosInstance.get("/products", { params });
-			setProducts(response.data.products);
+			if (loadMore) {
+				setProducts((prevProducts) => [
+					...prevProducts,
+					...response.data.products,
+				]);
+			} else {
+				setProducts(response.data.products);
+			}
+			setHasMore(response.data.hasMore);
 		} catch (error) {
 			console.error(error);
 		}
 	};
 
 	const handleLoadMore = () => {
+		const newSkip = skip + limit;
 		const body = {
-			skip: skip + limit,
+			skip: newSkip,
 			limit,
 			loadMore: true,
 			filters,
 		};
 		fetchProducts(body);
-		setSkip(skip + limit);
+		setSkip(newSkip);
 	};
 
 	return (
@@ -78,14 +86,16 @@ const LandingPage = () => {
 				))}
 			</div>
 			{/* load more */}
-			<div className="flex justify-center mt-5">
-				<button
-					onClick={handleLoadMore}
-					className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500"
-				>
-					more
-				</button>
-			</div>
+			{hasMore && (
+				<div className="flex justify-center mt-5">
+					<button
+						onClick={handleLoadMore}
+						className="px-4 py-2 mt-5 text-white bg-black rounded-md hover:bg-gray-500"
+					>
+						more
+					</button>
+				</div>
+			)}
 		</section>
 	);
 };
