@@ -4,10 +4,11 @@ import RadioBox from "./Sections/RadioBox";
 import SearchInput from "./Sections/SearchInput";
 import CardItem from "./Sections/CardItem";
 import axiosInstance from "../../utils/axios";
-// import {continents, prices} from '../../utils/'
+import { continents, prices } from "/src/utils/filterData.js";
 
 const LandingPage = () => {
 	const limit = 4;
+	const [searchTerm, setSearchTerm] = useState("");
 	const [products, setProducts] = useState([]);
 	const [skip, setSkip] = useState(0);
 	const [hasMore, setHasMore] = useState(true);
@@ -56,11 +57,30 @@ const LandingPage = () => {
 			limit,
 			loadMore: true,
 			filters,
+			searchTerm,
 		};
 		fetchProducts(body);
 		setSkip(newSkip);
 	};
 
+	const handleFilters = (newFilteredData, category) => {
+		const newFilters = { ...filters };
+		newFilters[category] = newFilteredData;
+		showFilteredResults(newFilters);
+		setFilters(newFilters);
+	};
+
+	const showFilteredResults = (filters) => {
+		const body = {
+			skip: 0,
+			limit,
+			filters,
+			searchTerm,
+		};
+
+		fetchProducts(body);
+		setSkip(0);
+	};
 	return (
 		<section>
 			<div className="text-center m-7">
@@ -69,7 +89,11 @@ const LandingPage = () => {
 			{/* filter */}
 			<div className="flex gap-3">
 				<div className="w-1/2">
-					<CheckBox />
+					<CheckBox
+						continents={continents}
+						checkedContinents={filters.continents}
+						onFilters={(filters) => handleFilters(filters, "continents")}
+					/>
 				</div>
 				<div className="w-1/2">
 					<RadioBox />

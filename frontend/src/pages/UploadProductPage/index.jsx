@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import FileUpload from "../../components/FileUpload";
 
 const continents = [
-	{ key: 1, value: "Asia" },
-	{ key: 2, value: "Afirica" },
-	{ key: 3, value: "Eurpoe" },
-	{ key: 4, value: "Australia" },
-	{ key: 5, value: "North America" },
-	{ key: 6, value: "South America" },
+	{ key: 1, value: "Afirica" },
+	{ key: 2, value: "Europe" },
+	{ key: 3, value: "Asia" },
+	{ key: 4, value: "North America" },
+	{ key: 5, value: "South America" },
+	{ key: 6, value: "ustralia" },
 	{ key: 7, value: "Antarctica" },
 ];
 

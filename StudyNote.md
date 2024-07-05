@@ -2077,12 +2077,12 @@ import { useNavigate } from "react-router-dom";
 import FileUpload from "../../components/FileUpload";
 
 const continents = [
-	{ key: 1, value: "Asia" },
-	{ key: 2, value: "Afirica" },
-	{ key: 3, value: "Eurpoe" },
-	{ key: 4, value: "Australia" },
-	{ key: 5, value: "North America" },
-	{ key: 6, value: "South America" },
+	{ key: 1, value: "Afirica" },
+	{ key: 2, value: "Europe" },
+	{ key: 3, value: "Asia" },
+	{ key: 4, value: "North America" },
+	{ key: 5, value: "South America" },
+	{ key: 6, value: "ustralia" },
 	{ key: 7, value: "Antarctica" },
 ];
 
@@ -2733,6 +2733,134 @@ try {
 ```
 
 ### 9. Creating a checkbox filter feature
+
+- Filter to show only applicable travel products
+
+1. Create filtering criteria Data
+   [utils/filterData.js]
+
+```js
+const continents = [
+	{ _id: 1, name: "Africa" },
+	{ _id: 2, name: "Europe" },
+	{ _id: 3, name: "Asia" },
+	{ _id: 4, name: "North America" },
+	{ _id: 5, name: "South America" },
+	{ _id: 6, name: "Australia" },
+	{ _id: 7, name: "Antarctica" },
+];
+
+const prices = [
+	{ _id: 0, name: "All", array: [] },
+	{ _id: 1, name: "$0 ~ $99", array: [0, 99] },
+	{ _id: 2, name: "$100 ~ $299", array: [100, 299] },
+	{ _id: 3, name: "$300 ~ $499", array: [300, 499] },
+	{ _id: 4, name: "$500 ~ $699", array: [500, 699] },
+	{ _id: 5, name: "over $700", array: [700, 5000] },
+];
+
+export { continents, prices };
+```
+
+2. [LandingPage/index.jsx]
+
+```js
+const handleFilters = (newFilteredData, category) => {
+	const newFilters = { ...filters };
+	newFilters[category] = newFilteredData;
+	showFilteredResults(newFilters);
+	setFilters(newFilters);
+};
+
+const showFilteredResults = (filters) => {
+	const body = {
+		skip: 0,
+		limit,
+		filters,
+		searchTerm,
+	};
+
+	fetchProducts(body);
+	setSkip(0);
+};
+
+<CheckBox
+	continents={continents}
+	checkedContinents={filters.continents}
+	onFIlters={(filters) => handleFilters(filters, "continents")}
+/>;
+```
+
+3. [LandingPage/Sections/CheckBox.jsx]
+
+```js
+import React from "react";
+
+function CheckBox({ continents, checkedContinents, onFilters }) {
+	const handleToggle = (continentId) => {
+		const currentIndex = checkedContinents.indexOf(continentId);
+
+		const newChecked = [...checkedContinents];
+
+		if (currentIndex === -1) {
+			newChecked.push(continentId);
+		} else {
+			newChecked.splice(currentIndex, 1);
+		}
+		onFilters(newChecked);
+	};
+
+	return (
+		<div className="p-2 mb-3 bg-gray-100 rounded-md">
+			{continents?.map((continent) => {
+				<div key={continent._id}>
+					<input
+						type="checkbox"
+						onChange={() => handleToggle(continent._id)}
+						checked={
+							checkedContinents.indexOf(continent._id) === -1 ? false : true
+						}
+					/>{" "}
+					<label>{continent.name}</label>
+				</div>;
+			})}
+		</div>
+	);
+}
+
+export default CheckBox;
+```
+
+4. Router
+   [routes/products.js]
+
+```js
+let findArgs = {};
+for (const key in req.query.filters) {
+if (req.query.filters[key].length > 0) {
+	if (key === "price") {
+		findArgs[key] = {
+			$gte: req.query.filters[key][0],
+
+			$lte: req.query.filters[key][1],
+		};
+	} else {
+		findArgs[key] = req.query.filters[key];
+	}
+}
+}
+// console.log(findArgs); // -> continent index
+
+try {
+const products = await Product.find(findArgs)
+	.populate("writer")
+	.sort([[sortBy, order]])
+	.skip(skip)
+	.limit(limit);
+
+const productsTotal = await Product.countDocuments(findArgs);
+
+```
 
 ### 10. Create a rainbow filter feature
 
